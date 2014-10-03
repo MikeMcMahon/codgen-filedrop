@@ -50,7 +50,6 @@ def main():
     for m in mp3s:
         print m
 
-    return
     mp3s = [m + '\n' for m in mp3s]
 
 
