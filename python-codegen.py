@@ -15,14 +15,16 @@ CODEGEN_JSON = 'json'
 def get_music(path, dir_contents):
     mp3s = []
     other = []
+    check_dirs = []
     for d_c in dir_contents:
-        if os.path.isdir(os.path.join(path, d_c)):
-            full_path = os.path.join(path, d_c)
-            files = os.listdir(full_path)
-            if len(files) > 0:
-                other = get_music(full_path, files)
+        full_path = os.path.join(path, d_c)
+        if os.path.isdir(full_path):
+            check_dirs.append(full_path)
         else:
-            mp3s.append(os.path.join(path, d_c))
+            mp3s.append(full_path)
+    else:
+        for cd in check_dirs:
+            other += get_music(cd, os.listdir(cd))
 
     return mp3s + other
 
@@ -48,7 +50,9 @@ def main():
     for m in mp3s:
         print m
 
+    return
     mp3s = [m + '\n' for m in mp3s]
+
 
     out_filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '-file_list.txt'
     out_filepath = os.path.join(CODEGEN_DROP, out_filename)
