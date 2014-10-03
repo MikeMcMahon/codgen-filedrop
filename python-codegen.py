@@ -31,7 +31,6 @@ def get_music(path, dir_contents):
 
 def main():
     argc, args = len(sys.argv), sys.argv
-
     if argc < 2:
         print "Please specify a path to look for music"
         return
@@ -53,13 +52,13 @@ def main():
     mp3s = [m + '\n' for m in mp3s]
 
 
-    out_filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '-file_list.txt'
+    out_filename = '{0}-file_list.txt'.format(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
     out_filepath = os.path.join(CODEGEN_DROP, out_filename)
     with open(out_filepath, 'w') as out_file:
         out_file.writelines(mp3s)
 
-    dest_filepath = os.path.join(CODEGEN_DROP, CODEGEN_JSON, datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '-to_ingest.json')
-
+    dest_filepath = os.path.join(CODEGEN_DROP, CODEGEN_JSON,
+                                 datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '-to_ingest.json')
     with open(dest_filepath, 'w') as output:
         with open(out_filepath) as ingest:
             subprocess.call([os.path.join(CODEGEN_EXE, 'codegen.exe'), '-s'], stdin=ingest, stdout=output)
